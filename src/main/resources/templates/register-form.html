@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/login-form.css}">
+</head>
+<body>
+<div class="login-container">
+    <div class="login-form-part">
+        <form class="login-form"
+              th:object="${user}" th:method="post" th:action="@{/register}">
+            <div class="header">Регистрация</div>
+            <div class="input-box" id="user-name">
+                <div class="label">Логин</div>
+                <input type="text" class="input" th:field="*{username}"
+                       th:classappend="${#fields.hasErrors('username')} ? input-error"/>
+                <span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+            </div>
+            <div class="input-box" id="email">
+                <div class="label">Email</div>
+                <input type="text" class="input" th:field="*{email}"
+                       th:classappend="${#fields.hasErrors('email')} ? input-error"/>
+                <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+            <div class="input-box" id="password">
+                <div class="label">Пароль</div>
+                <input type="password" class="input" th:field="*{password}"
+                       th:classappend="${#fields.hasErrors('password')} ? input-error"/>
+                <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
+            <div class="input-box" id="repeat-password">
+                <div class="label">Повторите пароль</div>
+                <input type="password" class="input" th:field="*{repeatedPassword}"
+                       th:classappend="${#fields.hasErrors('repeatedPassword')} ? input-error"/>
+                <span class="error" th:if="${#fields.hasErrors('repeatedPassword')}"
+                      th:errors="*{repeatedPassword}"></span>
+            </div>
+            <button class="custom-button" id="login-but" type="submit">Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователи</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/users-table.css}">
+    <script src="https://kit.fontawesome.com/98a2cf676f.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="app">
+    <div class="content users-container">
+        <nav th:replace="fragments/nav-bar"></nav>
+        <div class="header">Пользователи</div>
+        <div class="custom-table" id="users-table">
+            <div class="table-content">
+                <div class="table-column-names">
+                    <span>Id</span>
+                    <span>Имя пользователя</span>
+                    <span>Действие</span>
+                </div>
+                <div class="users-list">
+                    <div class="table-row" th:unless="${users.empty}" th:each="user : ${users}">
+                        <span th:text="${user.id}">1</span>
+                        <span th:text="${user.username}">Random dude</span>
+                        <form class="buttons-span" th:method="get"
+                              th:action="@{/user/{id}(id=${user.id})}">
+                            <button class="icon-button" title="Редактировать пользователя">
+                                <span class="fas fa-edit"></span>
+                            </button>
+                        </form>
+                    </div>
+                    <div th:if="${users.empty}" class="table-row">
+                        <span class="no-data">No data</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

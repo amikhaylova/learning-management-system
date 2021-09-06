@@ -1,0 +1,21 @@
+.assign-user{
+  display: grid;
+  grid-template-columns: minmax(0, 0.5fr) minmax(0, 7fr) minmax(0, 0.5fr);
+  grid-template-rows: repeat(3, min-content);
+  grid-row-gap: 15px;
+}
+.header, .assign-user-form{
+  grid-column: 2/3;
+}
+select:focus{
+  box-shadow: none !important;
+}
+.assign-button{
+  margin-top: 20px;
+}
+.form-select{
+  height: 43px;
+}
+.label{
+  margin-bottom: 5px;
+}

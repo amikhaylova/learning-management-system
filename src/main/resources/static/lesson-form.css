@@ -1,0 +1,57 @@
+.lesson-creation {
+    display: grid;
+    grid-template-columns: minmax(0, 0.5fr) minmax(0, 7fr) minmax(0, 0.5fr);
+    grid-template-rows: repeat(2, min-content);
+}
+
+.header, .lesson-form {
+    grid-column: 2/3;
+}
+
+.label {
+    align-self: end;
+    font-size: 1.2em;
+}
+
+#lesson-name {
+    grid-column: 2/3;
+    align-self: center;
+}
+
+#lesson-name input {
+    width: 100%;
+}
+
+#lesson-content {
+    grid-column: 2/3;
+    height: 100%;
+    align-self: center;
+}
+
+#lesson-content textarea {
+    height: 300px;
+    align-self: center;
+}
+
+#save-les-but {
+    grid-column: 2/3;
+    width: 20%;
+    min-width: 150px;
+    justify-self: end;
+    align-self: center;
+}
+
+.error {
+    align-self: start;
+}
+.input-box {
+    min-height: 95px;
+}
+
+.input-box-textarea {
+   max-height: 391px;
+}
+.input-box textarea {
+    height: 300px;
+    align-self: start;
+}

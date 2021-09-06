@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Курсы</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/course-table.css}">
+    <script src="https://kit.fontawesome.com/98a2cf676f.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="app">
+    <div class="content courses">
+        <nav th:replace="fragments/nav-bar"></nav>
+        <div class="header">Курсы</div>
+
+        <form class="input-box" id="search-bar">
+            <div class="label">Поиск по названию</div>
+            <input type="text" class="input" th:value="${titlePrefix}"
+                   name="titlePrefix"/>
+            <button class="custom-button" id="search-but">Найти</button>
+        </form>
+        <div class="link" sec:authorize="hasRole('ADMIN')" id="new-course">
+            <a th:href="@{course/new}">Создать новый курс</a>
+        </div>
+        <div class="course-container">
+            <div th:each="course : ${courses}" th:method="get" th:action="@{/course/{id}(id = ${course.id})}"
+                 class="course-card">
+                <img th:src="@{/course/{id}/cover (id=${course.id})}" class="cover"
+                     onerror="this.src='../img/no-cover.jpg'">
+                <div th:text="${course.title}" class="course-title"></div>
+                <div th:text="${course.author}" class="course-author"></div>
+                <div class="buttons-span">
+                    <form sec:authorize="hasRole('ADMIN')" th:method="delete"
+                          th:action="@{/course/{id}(id = ${course.id})}">
+                        <button class="icon-button" title="Удалить курс">
+                            <span class="fas fa-trash-alt"></span>
+                        </button>
+                    </form>
+                    <form th:method="get" th:action="@{/course/{id}/assign(id = ${course.id})}"
+                          sec:authorize="hasRole('ADMIN') or hasRole('STUDENT')">
+                        <button class="icon-button" title="Подписаться на курс"
+                                th:title="${#request.isUserInRole('ADMIN') ?
+                                        'Добавить пользователя на курс' :
+                                        'Записаться на курс'}">
+                            <span class="fas fa-user-plus"></span>
+                        </button>
+                    </form>
+                    <form th:method="get" th:action="@{/course/{id}(id = ${course.id})}">
+                        <button class="icon-button" sec:authorize="hasRole('ADMIN')"
+                                title="Редактировать курс">
+                            <span class="fas fa-edit"></span>
+                        </button>
+                        <button class="icon-button" sec:authorize="!hasRole('ADMIN')"
+                                title="Информация о курсе">
+                            <span class="fas fa-arrow-circle-right"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="page-container" th:if="${pages != 0 and (currentPage + 1) <= pages}">
+            <form th:method="get" th:action="@{/course}" th:unless="${currentPage == 0}" id="left-page">
+                <input name="titlePrefix" th:value="${titlePrefix}" type="hidden"/>
+                <input name="page" th:value="${currentPage - 1}" type="hidden"/>
+                <button class="icon-button">
+                    <span class="fas fa-chevron-left"></span>
+                </button>
+            </form>
+            <div th:text="|Стр ${currentPage + 1} из ${pages}|" id="page-text"></div>
+            <form th:method="get" th:action="@{/course}"  th:if="${(currentPage + 1) < pages}">
+                <input name="titlePrefix" th:value="${titlePrefix}" type="hidden"/>
+                <input name="page" th:value="${currentPage + 1}" type="hidden" id="right-page"/>
+                <button class="icon-button">
+                    <span class="fas fa-chevron-right"></span>
+                </button>
+            </form>
+        </div>
+        <div class="page-container" th:if="${pages == 0 or (currentPage + 1) > pages}">No data</div>
+    </div>
+</div>
+</div>
+</body>
+</html>

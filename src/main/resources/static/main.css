@@ -1,0 +1,256 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: Cambria;
+}
+
+/* Works on Firefox */
+* {
+    scrollbar-width: thin;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #c1c3c5;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    border: 3px solid #b1b2b4;
+}
+body {
+    background-color: #f0f2f5;
+    overflow-x: hidden;
+}
+
+.app {
+    width: 100vw;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 6fr) minmax(0, 1fr);
+    grid-template-areas: ". con con con con .";
+}
+
+.content {
+    min-height: 600px;
+    background-color: white;
+    grid-column: 2/3;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    max-height: inherit;
+}
+
+.header {
+    justify-self: center;
+    align-self: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+input, textarea, select {
+    padding: 10px;
+    border: 1px solid #e5e7ea;
+    border-radius: 5px;
+    font-size: 1.1em;
+}
+
+textarea {
+    padding: 10px;
+    min-height: 30px;
+}
+
+input:focus, textarea:focus {
+    outline-width: 0;
+}
+
+.custom-button {
+    background-color: #ec5252;
+    border-width: 0;
+    color: white;
+    font-weight: bolder;
+    font-size: 1.2em;
+    border-radius: 5px;
+!important;
+    height: 40px;
+    width: 150px;
+}
+
+.custom-button:hover {
+    background-color: #ef6767;
+    cursor: pointer;
+}
+
+.error {
+    color: #ec5252;
+    align-self: start;
+}
+
+.success {
+    color: limegreen;
+    align-self: start;
+}
+
+.input-box {
+    display: grid;
+    grid-template-rows: repeat(3, min-content);
+    grid-template-columns: 1fr;
+    align-self: center;
+}
+
+.input-box input, select {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.input-box, .input-box-textarea span {
+    align-self: end;
+}
+
+.input-box, .input-box-textarea .label {
+    align-self: start;
+}
+
+.input-box-textarea {
+    display: grid;
+    grid-template-rows: repeat(3, min-content);
+    align-self: start;
+}
+
+.input-box-textarea textarea {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.label {
+    align-self: end;
+    font-size: 1.2em;
+}
+
+.custom-table {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.table-content {
+    border-radius: 5px;
+    border: 1px solid #e5e7ea;
+    /*grid-template-rows: 40px;*/
+}
+
+.table-content span {
+    padding: 10px 10px;
+    align-self: center;
+}
+
+select:focus {
+    border: 1px solid #e5e7ea;
+}
+
+.warning {
+    background-color: #efa5a5;
+    color: darkred;
+    border-radius: 5px;
+    height: 50px;
+    width: 100vw;
+    display: grid;
+    align-items: center;
+    padding-left: 10px;
+}
+
+.header {
+    grid-column: 2/3;
+}
+
+.navbar {
+    grid-column: 1/4;
+}
+
+a:link, a, a:visited {
+    color: darkred;
+    text-decoration: none;
+}
+
+.active-url {
+    background-color: green;
+}
+
+.input-error {
+    border: 1px solid #ec5252;
+}
+
+
+.table-row {
+    height: 65px;
+}
+
+.no-data {
+    grid-column: 1/5;
+    align-self: center;
+}
+
+.float-right {
+    margin-left: auto !important;
+    justify-self: center;
+}
+
+.logout-button {
+    background: #f8f9fa;
+    /*text-decoration: none !important;*/
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    width: 50px !important;
+    margin-right: 15px;
+}
+
+.logout-button:hover {
+    background: #f8f9fa;
+}
+
+.icon-button {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    outline: none;
+    width: min-content;
+    height: min-content;
+}
+
+.fas {
+    font-size: 25px;
+}
+
+.fa-sign-out-alt{
+    font-size: 28px;
+}
+.fa-trash-alt, .fa-sign-out-alt {
+    color: red;
+}
+
+.fa-edit, .fa-arrow-circle-right{
+    color: limegreen;
+}
+
+.fa-user-plus, .fa-user-times {
+    color: dodgerblue;
+}
+.fa-chevron-left, .fa-chevron-right{
+    color: #ec5252;
+}
+#login{
+    color: #000;
+}
+.cover-nav {
+    object-fit: cover;
+    height: 35px;
+    width: 35px;
+    margin-left: 5px;
+    margin-right: 10px;
+}

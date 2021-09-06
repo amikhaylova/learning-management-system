@@ -1,0 +1,148 @@
+.courses {
+    display: grid;
+    grid-template-columns: minmax(0, 0.5fr) minmax(0, 7fr) minmax(0, 0.5fr);
+    grid-template-rows: repeat(10, min-content);
+}
+
+.header, #search-bar, #courses-table, .link, .course-container, .page-container {
+    grid-column: 2/3;
+}
+
+.course-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding-top: 20px;
+}
+
+.course-container> div:nth-child(1){
+    justify-self: start;
+}
+
+.course-container> div:nth-child(3){
+    justify-self: end;
+}
+
+.course-container> div:nth-child(2){
+    justify-self:center;
+}
+
+.course-card {
+    border: 1px solid #e5e7ea;
+    border-radius: 5px;
+    width: 280px;
+    min-height: 350px;
+    display: grid;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.course-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding-top: 10px;
+}
+
+.course-author {
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.cover {
+    object-fit: cover;
+    height:190px;
+    width: 280px;
+
+}
+
+#search-bar {
+    align-items: center;
+}
+
+.table-title {
+    font-size: 1.2em;
+    grid-column: 2/3;
+    padding-top: 5px;
+}
+
+.link {
+    align-self: end;
+    font-size: 1.2em;
+}
+
+#search-but {
+    margin-top: 10px;
+    justify-self: end;
+}
+
+.courses-list, users-list {
+    overflow-y: auto;
+    width: 100%;
+    max-height: 350px;
+}
+
+.table-column-names {
+    border-bottom: 1px solid #e5e7ea;
+    font-weight: bold;
+    width: calc(100% - 5px);
+}
+
+.courses-list > div:nth-child(2n+1) {
+    background: #f0f2f5;
+}
+
+.buttons-span {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-self: end;
+    padding-bottom: 10px;
+    gap: 20px;
+}
+
+.page-container {
+    display: grid;
+    grid-template-columns: 1fr 120px 1fr;
+    padding-top: 40px;
+}
+
+#left-page{
+    justify-self: right;
+    grid-column: 1/2;
+}
+
+
+#right-page{
+    justify-self: left;
+    grid-column: 3/4;
+}
+
+.table-column-names, .table-row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.5fr) minmax(0, 3fr) minmax(0, 2fr) minmax(0, 1.2fr);
+}
+#page-text{
+    padding-bottom: 7px;
+    justify-self: center;
+    grid-column: 2/3;
+}
+.input-box {
+    display: grid;
+    grid-template-rows: repeat(2, min-content);
+    grid-template-columns: 5fr 1fr;
+    align-self: center;
+}
+.input-box input{
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+#search-but{
+    grid-column: 2/3;
+    grid-row: 2/3;
+    align-self: center;
+    justify-self: right;
+    margin-top: 0;
+    height: 46px;
+}
+#new-course{
+    margin-top: 20px;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title sec:authorize="hasRole('ADMIN')">Создать урок</title>
+    <title sec:authorize="!hasRole('ADMIN')">Информация об уроке</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/lesson-form.css}">
+</head>
+<body>
+<div class="app">
+    <div class="content lesson-creation">
+        <nav th:replace="fragments/nav-bar"></nav>
+        <form class="lesson-form"
+              th:object="${lessonDto}" th:method="post" th:action="@{/lesson}">
+            <div class="header" sec:authorize="hasRole('ADMIN')">Создать урок</div>
+            <div class="header" sec:authorize="!hasRole('ADMIN')">Информация об уроке</div>
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{courseId}">
+
+            <div class="input-box" id="lesson-name">
+                <div class="label">Название урока</div>
+                <input type="text" class="input" th:field="*{title}"
+                       th:classappend="${#fields.hasErrors('title')} ? input-error"
+                       th:readonly="${#request.isUserInRole('ADMIN') ? 'false' : 'true'}"/>
+                <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Название урока должно быть заполнено</span>
+            </div>
+
+            <div class="input-box-textarea" id="lesson-content">
+                <div class="label">Содержание урока</div>
+                <textarea th:field="*{text}"
+                          th:classappend="${#fields.hasErrors('text')} ? input-error"
+                          th:readonly="${#request.isUserInRole('ADMIN') ? 'false' : 'true'}">
+            </textarea>
+                <span class="error" th:if="${#fields.hasErrors('text')}" th:errors="*{text}">Содержание урока должно быть заполнено</span>
+            </div>
+            <button class="custom-button" id="save-les-but" type="submit"
+                    sec:authorize="hasRole('ADMIN')">Сохранить
+            </button>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+.login-container{
+    background-image: url('img/backgroung-login.jpeg');
+    width: 100vw;
+    min-height: 100vh;
+    display: grid;
+    /*grid-template-columns: 3fr 3.5fr;*/
+    grid-template-columns: 2fr 6fr 2fr;
+    background-position: center bottom;
+}
+.login-form-part{
+    grid-column: 2/3;
+    align-self: center;
+    background-color: rgba(240, 242, 245, 0.95);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    height: 80%;
+   /* height: 75%;*/
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-areas: ". login-form .";
+    align-items: center;
+}
+.login-form{
+    grid-area: login-form;
+    display: grid;
+}
+.header{
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 60px;
+    margin-top: 0;
+    grid-column: 1/2 !important;
+    align-self: start;
+}
+#login-but{
+    margin-top: 20px;
+    width: 230px;
+    border-radius: 20px;
+    justify-self: center;
+    align-self: center;
+}
+#password{
+    align-self: start;
+}
+.no-account{
+    justify-self: center;
+    align-self: end;
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+.input-box {
+    min-height: 95px;
+}

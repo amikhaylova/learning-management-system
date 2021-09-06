@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователь</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/course-table.css}">
+    <link rel="stylesheet" th:href="@{/user-form.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/98a2cf676f.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="app">
+    <div class="content user-container">
+        <nav th:replace="fragments/nav-bar"></nav>
+        <div class="header">Информация о пользователе</div>
+
+        <div class="avatar-container">
+            <div class="avatar" id="avatar">
+                <img th:src="@{/user/{id}/avatar(id=${user.id})}" alt="User profile" class="cover rounded-circle"
+                     onerror="this.src='../img/default-avatar.jpg'">
+            </div>
+            <form th:method="post" th:action="@{/user/{id}/avatar(id=${user.id})}" enctype="multipart/form-data"
+                  id="photo-but">
+                <label class="custom-file-upload rounded-circle" title="Загрузить фото">
+                    <input type="file" name="avatar" onchange="this.form.submit()"/>
+                    <span class="fas fa-camera fa-2x"></span>
+                </label>
+            </form>
+        </div>
+        <form class="user-form"
+              th:object="${user}" th:method="post" th:action="@{/user}">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{courses}">
+            <div class="input-box" id="user-name">
+                <div class="label">Логин</div>
+                <input type="text" class="input" th:field="*{username}"
+                       th:classappend="${#fields.hasErrors('username')} ? input-error"/>
+                <span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+            </div>
+            <div class="input-box" id="password">
+                <div class="label">Новый пароль</div>
+                <input type="password" class="input" th:field="*{password}"
+                       th:classappend="${#fields.hasErrors('password')} ? input-error"
+                       placeholder="Изменить текущий пароль"/>
+                <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
+            <div class="input-box" id="first-name">
+                <div class="label">Имя</div>
+                <input type="text" class="input" th:field="*{firstName}"
+                       th:classappend="${#fields.hasErrors('firstName')} ? input-error"/>
+                <span class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+            </div>
+            <div class="input-box" id="last-name">
+                <div class="label">Фамилия</div>
+                <input type="text" class="input" th:field="*{lastName}"
+                       th:classappend="${#fields.hasErrors('lastName')} ? input-error"/>
+                <span class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+            </div>
+            <div class="input-box" id="email">
+                <div class="label">Email</div>
+                <input type="text" class="input" th:field="*{email}"
+                       th:classappend="${#fields.hasErrors('email')} ? input-error"/>
+                <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+            <div class="input-box" id="phone-number">
+                <div class="label">Номер телефона</div>
+                <input type="text" class="input" th:field="*{phoneNumber}"
+                       th:classappend="${#fields.hasErrors('phoneNumber')} ? input-error"/>
+                <span class="error" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
+            </div>
+            <div class="label" sec:authorize="hasRole('ADMIN')">Роли</div>
+            <div class="select">
+                <div class="select-container" sec:authorize="hasRole('ADMIN')">
+                    <select class="selectpicker" multiple th:field="*{roles}" sec:authorize="hasRole('ADMIN')">
+                        <option th:each="role : ${roles}"
+                                th:text="${role.name}"
+                                th:value="${role.id}"
+                                th:selected="${user.roles?.contains(role)}"></option>
+                    </select>
+                    <div class="error" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"
+                         sec:authorize="hasRole('ADMIN')"></div>
+                </div>
+            </div>
+            <select th:field="*{roles}" multiple sec:authorize="!hasRole('ADMIN')"
+                    style="visibility: hidden;" class="selectpicker">
+                <option th:each="role : ${roles}"
+                        th:text="${role.name}"
+                        th:value="${role.id}"
+                        th:selected="${user.roles?.contains(role)}"></option>
+            </select>
+            <button class="custom-button" id="login-but" type="submit">Изменить</button>
+            <script sec:authorize="hasRole('ADMIN')">
+                $(function () {
+                    $('select').selectpicker();
+                });
+            </script>
+        </form>
+        <div class="table-title" >
+            Список моих курсов
+        </div>
+        <div class="custom-table" id="courses-table" >
+            <div class="table-content">
+                <div class="table-column-names">
+                    <span>Id</span>
+                    <span>Название</span>
+                    <span>Автор</span>
+                    <span>Действие</span>
+                </div>
+
+                <div class="courses-list">
+                    <div th:unless="${user.courses.empty}" th:each="course : ${user.courses}" class="table-row">
+                        <span th:text="${course.id}">1</span>
+                        <span>
+                             <a th:text="${course.title}">Course name</a>
+                        </span>
+                        <span th:text="${course.author}">Random Dude</span>
+                        <div class="buttons-span">
+                            <form th:method="get" th:action="@{/course/{id}(id = ${course.id})}">
+                                <button class="icon-button"
+                                        th:title="${#request.isUserInRole('ADMIN') ?
+                                        'Редактировать курс' :
+                                        'Информация о курсе'}">
+                                    <span class="fas fa-edit"></span>
+                                </button>
+                            </form>
+                            <form th:method="delete"
+                                  th:action="@{/user/unassign/{course}(course = ${course.id})}">
+                                <input type="hidden" name="userId" th:value="${user.id}"/>
+                                <button class="icon-button" title="Отписаться">
+                                    <span class="fas fa-sign-out-alt"></span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div th:if="${user.courses.empty}" class="table-row">
+                        <span class="no-data">No data</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

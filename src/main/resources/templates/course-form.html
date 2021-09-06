@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title sec:authorize="hasRole('ADMIN')">Редактировать курс</title>
+    <title sec:authorize="!hasRole('ADMIN')">Информация о курсе</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/course-form.css}">
+    <script src="https://kit.fontawesome.com/98a2cf676f.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="app">
+    <div class="content course-creation">
+        <nav th:replace="fragments/nav-bar"></nav>
+        <div class="header" sec:authorize="hasRole('ADMIN')">Редактировать курс</div>
+        <div class="header" sec:authorize="!hasRole('ADMIN')">Информация о курсе</div>
+        <div class="course-container">
+            <form class="edit-form" th:object="${course}" th:method="post" th:action="@{/course}"
+                  th:classappend="${course.id == null} ? full-width : '' ">
+                <input type="hidden" th:field="*{id}">
+                <div class="input-box" id="course-name">
+                    <div class="label">Название курса</div>
+                    <input type="text" class="input" th:field="*{title}"
+                           th:classappend="${#fields.hasErrors('title')} ? input-error"
+                           th:readonly="${#request.isUserInRole('ADMIN') ? 'false' : 'true'}"/>
+                    <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Название курса должно быть заполнено</span>
+                </div>
+                <div class="input-box" id="author-name">
+                    <div class="label">Автор курса</div>
+                    <input type="text" class="input" th:field="*{author}"
+                           th:classappend="${#fields.hasErrors('author')} ? input-error"
+                           th:readonly="${#request.isUserInRole('ADMIN') ? 'false' : 'true'}"/>
+                    <span class="error">
+                    <span th:if="${#fields.hasErrors('author')}"
+                          th:errors="*{author}">Автор курса должен быть заполнен</span>
+                </span>
+                </div>
+                <button type="submit" class="custom-button" id="course-info-but" sec:authorize="hasRole('ADMIN')">
+                    Обновить
+                </button>
+            </form>
+            <div class="avatar-container" th:unless="${course.id == null}">
+                <div class="avatar" id="avatar">
+                    <img th:src="@{/course/{id}/cover (id=${course.id})}" alt="Course cover" class="img-thumbnail cover"
+                          onerror="this.src='../img/no-cover.jpg'">
+                </div>
+                <form  sec:authorize="hasRole('ADMIN')" enctype="multipart/form-data" th:method="post" th:action="@{/course/{id}/cover (id=${course.id})}"
+                      id="photo-but">
+                    <label class="custom-file-upload rounded-circle" title="Загрузить обложку">
+                        <input type="file" name="cover"  onchange="this.form.submit()" />
+                        <span class="fas fa-camera fa-2x" ></span>
+                    </label>
+                </form>
+            </div>
+        </div>
+        <div class="link" th:unless="${lessons == null}" sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/lesson/new(course_id=${course.id})}">Создать новый урок</a>
+        </div>
+
+        <div class="table-title" sec:authorize="!hasRole('ADMIN')">
+            Уроки, входящие в курс
+        </div>
+
+        <div class="custom-table" id="lessons-table" th:unless="${lessons == null}">
+            <div class="table-content">
+                <div class="table-column-names">
+                    <span>Id</span>
+                    <span>Название</span>
+                    <span>Действие</span>
+                </div>
+                <div class="lessons-list">
+                    <div th:unless="${lessons.empty}" th:each="lesson : ${lessons}" class="table-row">
+                        <span th:text="${lesson.id}">1</span>
+                        <span th:text="${lesson.title}"></span>
+                        <div class="buttons-span">
+                            <form th:method="delete"
+                                  th:action="@{/lesson/{id}(course_id=${course.id}, id = ${lesson.id})}"
+                                  sec:authorize="hasRole('ADMIN')">
+                                <button class="icon-button" title="Удалить урок">
+                                    <span class="fas fa-trash-alt"></span>
+                                </button>
+                            </form>
+                            <form th:method="get" th:action="@{/lesson/{id}(id = ${lesson.id})}">
+                                <button class="icon-button"
+                                        th:title="${#request.isUserInRole('ADMIN') ?
+                                        'Редактировать урок' :
+                                        'Информация об уроке'}">
+                                    <span class="fas fa-edit"></span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div th:if="${lessons.empty}" class="table-row">
+                        <span class="no-data">No data</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-title" th:unless="${users == null}" sec:authorize="hasRole('ADMIN')">
+            Пользователи, связанные с курсом
+        </div>
+        <div class="custom-table" id="users-table" th:unless="${users == null}" sec:authorize="hasRole('ADMIN')">
+            <div class="table-content">
+                <div class="table-column-names">
+                    <span>Id</span>
+                    <span>Имя пользователя</span>
+                    <span>Действие</span>
+                </div>
+                <div class="users-list">
+                    <div class="table-row" th:unless="${users.empty}" th:each="user : ${users}">
+                        <span th:text="${user.id}">1</span>
+                        <span th:text="${user.username}">Random dude</span>
+                        <form class="buttons-span" th:method="delete"
+                              th:action="@{/course/{id}/assign(userId=${user.id}, id = ${course.id})}">
+                            <button class="icon-button" title="Снять пользователя с курса">
+                                <span class="fas fa-user-times"></span>
+                            </button>
+                        </form>
+                    </div>
+                    <div th:if="${users.empty}" class="table-row">
+                        <span class="no-data">No data</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
