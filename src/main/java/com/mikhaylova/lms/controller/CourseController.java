@@ -2,7 +2,6 @@ package com.mikhaylova.lms.controller;
 
 import com.mikhaylova.lms.domain.Course;
 import com.mikhaylova.lms.domain.User;
-import com.mikhaylova.lms.dto.CourseDto;
 import com.mikhaylova.lms.exception.InternalServerError;
 import com.mikhaylova.lms.exception.NotFoundException;
 import com.mikhaylova.lms.exception.UserNotAssignedToCourseException;
@@ -16,16 +15,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -77,7 +73,7 @@ public class CourseController {
         model.addAttribute("activePage", "courses");
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("titlePrefix", titlePrefix);
-        model.addAttribute("pages", (int)Math.ceil((double)courses.getTotalElements() / 3) );
+        model.addAttribute("pages", (int) Math.ceil((double) courses.getTotalElements() / 3));
         return "course-table";
     }
 
@@ -98,7 +94,7 @@ public class CourseController {
         return "course-form";
     }
 
-   /* @PreAuthorize("isAuthenticated()")*/
+    /* @PreAuthorize("isAuthenticated()")*/
     @GetMapping("/{id}/cover")
     public ResponseEntity<byte[]> courseCover(@PathVariable("id") Long id) {
         String contentType = courseCoverStorageService.getContentTypeByCourseId(id);
@@ -122,43 +118,6 @@ public class CourseController {
         return "redirect:/course/" + id;
     }
 
-    @Secured("ROLE_ADMIN")
-    @PostMapping
-    public String submitCourseForm(@Valid @ModelAttribute("course") CourseDto course,
-                                   BindingResult bindingResult,
-                                   Model model) {
-        if (bindingResult.hasErrors()) {
-            if (course.getId() != null) {
-                Course c = courseService.getCourseById(course.getId());
-                model.addAttribute("lessons", lessonService.findAllForLessonIdWithoutText(course.getId()));
-                model.addAttribute("users", userMapper.mapUserListToUserDtoList(new ArrayList<>(c.getUsers())));
-            } else {
-                //если id курса == null, это значит, что форма используется для создания курса, а не редактирования
-                //т.е. смысла отображать таблицы уроков и пользователей нет
-                model.addAttribute("lessons", null);
-                model.addAttribute("users", null);
-            }
-            return "course-form";
-        }
-        courseService.saveCourseDto(course);
-        return "redirect:/course";
-    }
-
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/new")
-    public String courseForm(Model model) {
-        model.addAttribute("course", new CourseDto());
-        return "course-form";
-    }
-
-    @Secured("ROLE_ADMIN")
-    @DeleteMapping("/{id}")
-    public String deleteCourse(@PathVariable("id") Long id) {
-        System.out.println(id);
-        courseService.deleteCourse(id);
-        return "redirect:/course";
-    }
-
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{courseId}/assign")
     public String assignUserForm(@PathVariable("courseId") Long courseId,
@@ -172,14 +131,6 @@ public class CourseController {
             throw new AccessDeniedException("Access denied");
         courseService.assignUser(courseId, userId);
         return "redirect:/course";
-    }
-
-    @Secured("ROLE_ADMIN")
-    @DeleteMapping("/{courseId}/assign")
-    public String unassignUserForm(@PathVariable("courseId") Long courseId,
-                                   @RequestParam("userId") Long userId) {
-        courseService.unassignUser(courseId, userId);
-        return "redirect:/course/" + courseId;
     }
 
     @PreAuthorize("isAuthenticated()")

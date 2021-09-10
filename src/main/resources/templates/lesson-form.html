@@ -13,7 +13,7 @@
     <div class="content lesson-creation">
         <nav th:replace="fragments/nav-bar"></nav>
         <form class="lesson-form"
-              th:object="${lessonDto}" th:method="post" th:action="@{/lesson}">
+              th:object="${lessonDto}" th:method="post" th:action="@{/admin/lesson}">
             <div class="header" sec:authorize="hasRole('ADMIN')">Создать урок</div>
             <div class="header" sec:authorize="!hasRole('ADMIN')">Информация об уроке</div>
             <input type="hidden" th:field="*{id}">

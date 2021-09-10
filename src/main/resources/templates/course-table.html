@@ -21,7 +21,7 @@
             <button class="custom-button" id="search-but">Найти</button>
         </form>
         <div class="link" sec:authorize="hasRole('ADMIN')" id="new-course">
-            <a th:href="@{course/new}">Создать новый курс</a>
+            <a th:href="@{admin/course/new}">Создать новый курс</a>
         </div>
         <div class="course-container">
             <div th:each="course : ${courses}" th:method="get" th:action="@{/course/{id}(id = ${course.id})}"
@@ -32,7 +32,7 @@
                 <div th:text="${course.author}" class="course-author"></div>
                 <div class="buttons-span">
                     <form sec:authorize="hasRole('ADMIN')" th:method="delete"
-                          th:action="@{/course/{id}(id = ${course.id})}">
+                          th:action="@{/admin/course/{id}(id = ${course.id})}">
                         <button class="icon-button" title="Удалить курс">
                             <span class="fas fa-trash-alt"></span>
                         </button>

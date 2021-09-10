@@ -15,7 +15,7 @@
         <div class="header" sec:authorize="hasRole('ADMIN')">Редактировать курс</div>
         <div class="header" sec:authorize="!hasRole('ADMIN')">Информация о курсе</div>
         <div class="course-container">
-            <form class="edit-form" th:object="${course}" th:method="post" th:action="@{/course}"
+            <form class="edit-form" th:object="${course}" th:method="post" th:action="@{/admin/course}"
                   th:classappend="${course.id == null} ? full-width : '' ">
                 <input type="hidden" th:field="*{id}">
                 <div class="input-box" id="course-name">
@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="link" th:unless="${lessons == null}" sec:authorize="hasRole('ADMIN')">
-            <a th:href="@{/lesson/new(course_id=${course.id})}">Создать новый урок</a>
+            <a th:href="@{/admin/lesson/new(course_id=${course.id})}">Создать новый урок</a>
         </div>
 
         <div class="table-title" sec:authorize="!hasRole('ADMIN')">
@@ -74,7 +74,7 @@
                         <span th:text="${lesson.title}"></span>
                         <div class="buttons-span">
                             <form th:method="delete"
-                                  th:action="@{/lesson/{id}(course_id=${course.id}, id = ${lesson.id})}"
+                                  th:action="@{/admin/lesson/{id}(course_id=${course.id}, id = ${lesson.id})}"
                                   sec:authorize="hasRole('ADMIN')">
                                 <button class="icon-button" title="Удалить урок">
                                     <span class="fas fa-trash-alt"></span>
@@ -112,7 +112,7 @@
                         <span th:text="${user.id}">1</span>
                         <span th:text="${user.username}">Random dude</span>
                         <form class="buttons-span" th:method="delete"
-                              th:action="@{/course/{id}/assign(userId=${user.id}, id = ${course.id})}">
+                              th:action="@{/admin/course/{id}/assign(userId=${user.id}, id = ${course.id})}">
                             <button class="icon-button" title="Снять пользователя с курса">
                                 <span class="fas fa-user-times"></span>
                             </button>

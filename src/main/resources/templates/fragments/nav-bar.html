@@ -19,7 +19,7 @@
                        th:classappend="${activePage == 'courses'} ? active">КУРСЫ</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-                    <a class="nav-link" th:href="@{/user/admin/users}"
+                    <a class="nav-link" th:href="@{/admin/user/users}"
                        th:classappend="${activePage == 'users'} ? active">ПОЛЬЗОВАТЕЛИ</a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">

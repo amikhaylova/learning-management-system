@@ -11,7 +11,6 @@ import com.mikhaylova.lms.service.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -87,14 +86,6 @@ public class UserController {
             user.setRoles(null);
         userService.saveUserDto(user);
         return "redirect:/course";
-    }
-
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/admin/users")
-    public String usersTable(Model model) {
-        model.addAttribute("users", userService.findAllUserDto());
-        model.addAttribute("activePage", "users");
-        return "users-table";
     }
 
     @PreAuthorize("isAuthenticated()")
