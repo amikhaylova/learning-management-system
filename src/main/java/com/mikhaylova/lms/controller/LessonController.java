@@ -29,9 +29,9 @@ public class LessonController {
     }
 
     @GetMapping("/{id}")
-    public String editLessonForm(Model model,
-                                 @PathVariable("id") Long id,
-                                 HttpServletRequest request) {
+    public String editLesson(Model model,
+                             @PathVariable("id") Long id,
+                             HttpServletRequest request) {
         if (!request.isUserInRole("ROLE_ADMIN")) {
             Lesson lesson = lessonService.findLessonById(id);
             User user = userService.findUserByUsername(request.getUserPrincipal().getName());

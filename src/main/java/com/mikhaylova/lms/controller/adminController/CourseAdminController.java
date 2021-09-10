@@ -50,7 +50,7 @@ public class CourseAdminController {
     }
 
     @GetMapping("/new")
-    public String courseForm(Model model) {
+    public String getCourseForm(Model model) {
         model.addAttribute("course", new CourseDto());
         return "course-form";
     }
@@ -63,7 +63,7 @@ public class CourseAdminController {
     }
 
     @DeleteMapping("/{courseId}/assign")
-    public String unassignUserForm(@PathVariable("courseId") Long courseId,
+    public String unassignUserFromCourse(@PathVariable("courseId") Long courseId,
                                    @RequestParam("userId") Long userId) {
         courseService.unassignUser(courseId, userId);
         return "redirect:/course/" + courseId;

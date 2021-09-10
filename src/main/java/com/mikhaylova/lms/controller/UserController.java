@@ -54,10 +54,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String userForm(Model model,
-                           @PathVariable("id") Long id,
-                           Principal principal,
-                           HttpServletRequest request) {
+    public String getUserForm(Model model,
+                              @PathVariable("id") Long id,
+                              Principal principal,
+                              HttpServletRequest request) {
         UserDto userDto = userService.findUserDtoById(id);
         if (!principal.getName().equals(userDto.getUsername()) && !request.isUserInRole("ROLE_ADMIN"))
             throw new AccessDeniedException("Access denied");
@@ -98,14 +98,14 @@ public class UserController {
 
     //перенаправление в личный кабинет
     @GetMapping("/profile")
-    public String getUserProfile(HttpServletRequest request) {
+    public String getUserAccountInformation(HttpServletRequest request) {
         Long id = userService.findUserByUsername(request.getUserPrincipal().getName()).getId();
         return "redirect:/user/" + id;
     }
 
     @GetMapping("/{id}/avatar")
     @ResponseBody
-    public ResponseEntity<byte[]> avatarImageByUserId(@PathVariable("id") Long id) {
+    public ResponseEntity<byte[]> getAvatarImageByUserId(@PathVariable("id") Long id) {
         String contentType = avatarStorageService.getContentTypeByUserId(id);
         byte[] data = avatarStorageService.getAvatarImageByUserId(id)
                 .orElseThrow(NotFoundException::new);
@@ -119,11 +119,11 @@ public class UserController {
     @GetMapping("/avatar")
     @ResponseBody
     public ResponseEntity<byte[]> avatarImageOfCurrentUser(Authentication auth) {
-        return avatarImageByUserId(userService.findUserByUsername(auth.getName()).getId());
+        return getAvatarImageByUserId(userService.findUserByUsername(auth.getName()).getId());
     }
 
     @DeleteMapping("/unassign/{courseId}")
-    public String unassignUser(@PathVariable("courseId") Long courseId, @RequestParam("userId") Long userId) {
+    public String unassignUserFromCourse(@PathVariable("courseId") Long courseId, @RequestParam("userId") Long userId) {
         courseService.unassignUser(courseId, userId);
         return "redirect:/user/" + userId;
     }

@@ -16,7 +16,7 @@ public class UserAdminController {
     }
 
     @GetMapping("/users")
-    public String usersTable(Model model) {
+    public String getUsersList(Model model) {
         model.addAttribute("users", userService.findAllUserDto());
         model.addAttribute("activePage", "users");
         return "users-table";

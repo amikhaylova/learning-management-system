@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ExceptionHandlerController implements ErrorController {
 
     @ExceptionHandler
-    public ModelAndView notFoundExceptionHandler(NotFoundException ex) {
+    public ModelAndView handleNotFoundException(NotFoundException ex) {
         ModelAndView modelAndView = new ModelAndView("not-found");
         modelAndView.addObject("exception", ex);
         modelAndView.setStatus(HttpStatus.NOT_FOUND);
@@ -23,21 +23,21 @@ public class ExceptionHandlerController implements ErrorController {
     }
 
     @ExceptionHandler
-    public ModelAndView accessDeniedExceptionHandler(AccessDeniedException ex) {
+    public ModelAndView handleAccessDeniedException(AccessDeniedException ex) {
         ModelAndView modelAndView = new ModelAndView("access-denied");
         modelAndView.setStatus(HttpStatus.FORBIDDEN);
         return modelAndView;
     }
 
     @ExceptionHandler
-    public ModelAndView userNotAssignedToCourseExceptionHandler(UserNotAssignedToCourseException ex) {
+    public ModelAndView handleUserNotAssignedToCourseException(UserNotAssignedToCourseException ex) {
         ModelAndView modelAndView = new ModelAndView("not-assigned");
         modelAndView.setStatus(HttpStatus.FORBIDDEN);
         return modelAndView;
     }
 
     @ExceptionHandler
-    public ModelAndView internalServerErrorHandler(InternalServerError ex) {
+    public ModelAndView handleInternalServerError(InternalServerError ex) {
         ModelAndView modelAndView = new ModelAndView("internal-error");
         modelAndView.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         return modelAndView;

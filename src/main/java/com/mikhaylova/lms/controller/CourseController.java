@@ -59,9 +59,9 @@ public class CourseController {
 
 
     @GetMapping
-    public String courseTable(Model model,
-                              @RequestParam(name = "titlePrefix", required = false) String titlePrefix,
-                              @Min(0) @RequestParam(name = "page", required = false) Integer page) {
+    public String getCourses(Model model,
+                             @RequestParam(name = "titlePrefix", required = false) String titlePrefix,
+                             @Min(0) @RequestParam(name = "page", required = false) Integer page) {
         Page<Course> courses = courseService.findCourses(titlePrefix, page);
         int currentPage;
         if (page == null)
@@ -77,9 +77,9 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public String courseForm(Model model,
-                             @PathVariable("id") Long id,
-                             HttpServletRequest request) {
+    public String getCourseForm(Model model,
+                                @PathVariable("id") Long id,
+                                HttpServletRequest request) {
         if (!request.isUserInRole("ROLE_ADMIN")) {
             User user = userService.findUserByUsername(request.getUserPrincipal().getName());
             if (!user.getCourses().contains(courseService.getCourseById(id)))
@@ -93,7 +93,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}/cover")
-    public ResponseEntity<byte[]> courseCover(@PathVariable("id") Long id) {
+    public ResponseEntity<byte[]> getCourseCover(@PathVariable("id") Long id) {
         String contentType = courseCoverStorageService.getContentTypeByCourseId(id);
         byte[] data = courseCoverStorageService.getCourseCoverByCourseId(id)
                 .orElseThrow(NotFoundException::new);
@@ -115,9 +115,9 @@ public class CourseController {
     }
 
     @PostMapping("/{courseId}/assign")
-    public String assignUserForm(@PathVariable("courseId") Long courseId,
-                                 @RequestParam("userId") Long userId,
-                                 HttpServletRequest request) {
+    public String assignUserToCourse(@PathVariable("courseId") Long courseId,
+                                     @RequestParam("userId") Long userId,
+                                     HttpServletRequest request) {
         String principalName = request.getUserPrincipal().getName();
         Long principalId = userService.findUserByUsername(principalName).getId();
         //предотвращаем попытку авторизованного пользователя (если он не адмиистратор)
@@ -129,7 +129,9 @@ public class CourseController {
     }
 
     @GetMapping("/{courseId}/assign")
-    public String assignUserForm(@PathVariable("courseId") Long courseId, Model model, HttpServletRequest request) {
+    public String getAssignUserToCourseForm(@PathVariable("courseId") Long courseId,
+                                            Model model,
+                                            HttpServletRequest request) {
         if (courseService.existsById(courseId)) {
             model.addAttribute("courseId", courseId);
             if (request.isUserInRole("ROLE_ADMIN")) {
