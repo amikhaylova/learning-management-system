@@ -3,6 +3,7 @@ package com.mikhaylova.lms.controller;
 import com.mikhaylova.lms.exception.InternalServerError;
 import com.mikhaylova.lms.exception.NotFoundException;
 import com.mikhaylova.lms.exception.UserNotAssignedToCourseException;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,7 +12,8 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
-public class ExceptionHandlerController {
+public class ExceptionHandlerController implements ErrorController {
+
     @ExceptionHandler
     public ModelAndView notFoundExceptionHandler(NotFoundException ex) {
         ModelAndView modelAndView = new ModelAndView("not-found");

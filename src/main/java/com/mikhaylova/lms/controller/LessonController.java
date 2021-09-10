@@ -3,11 +3,9 @@ package com.mikhaylova.lms.controller;
 import com.mikhaylova.lms.domain.Lesson;
 import com.mikhaylova.lms.domain.User;
 import com.mikhaylova.lms.exception.UserNotAssignedToCourseException;
-import com.mikhaylova.lms.mapper.LessonMapper;
 import com.mikhaylova.lms.service.LessonService;
 import com.mikhaylova.lms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +28,6 @@ public class LessonController {
         this.userService = userService;
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public String editLessonForm(Model model,
                                  @PathVariable("id") Long id,

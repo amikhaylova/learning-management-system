@@ -5,7 +5,6 @@ import com.mikhaylova.lms.dto.CourseDto;
 import com.mikhaylova.lms.mapper.UserMapper;
 import com.mikhaylova.lms.service.CourseService;
 import com.mikhaylova.lms.service.LessonService;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,7 +28,6 @@ public class CourseAdminController {
         this.userMapper = userMapper;
     }
 
-    @Secured("ROLE_ADMIN")
     @PostMapping
     public String submitCourseForm(@Valid @ModelAttribute("course") CourseDto course,
                                    BindingResult bindingResult,
@@ -51,14 +49,12 @@ public class CourseAdminController {
         return "redirect:/course";
     }
 
-    @Secured("ROLE_ADMIN")
     @GetMapping("/new")
     public String courseForm(Model model) {
         model.addAttribute("course", new CourseDto());
         return "course-form";
     }
 
-    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public String deleteCourse(@PathVariable("id") Long id) {
         System.out.println(id);
@@ -66,7 +62,6 @@ public class CourseAdminController {
         return "redirect:/course";
     }
 
-    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{courseId}/assign")
     public String unassignUserForm(@PathVariable("courseId") Long courseId,
                                    @RequestParam("userId") Long userId) {

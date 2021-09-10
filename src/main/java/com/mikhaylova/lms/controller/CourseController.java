@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -77,7 +76,6 @@ public class CourseController {
         return "course-table";
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public String courseForm(Model model,
                              @PathVariable("id") Long id,
@@ -94,7 +92,6 @@ public class CourseController {
         return "course-form";
     }
 
-    /* @PreAuthorize("isAuthenticated()")*/
     @GetMapping("/{id}/cover")
     public ResponseEntity<byte[]> courseCover(@PathVariable("id") Long id) {
         String contentType = courseCoverStorageService.getContentTypeByCourseId(id);
@@ -106,7 +103,6 @@ public class CourseController {
                 .body(data);
     }
 
-    @PreAuthorize("isAuthenticated()")
     @PostMapping("/{id}/cover")
     public String updateCourseCover(@RequestParam("cover") MultipartFile avatar,
                                     @PathVariable("id") Long id) {
@@ -118,7 +114,6 @@ public class CourseController {
         return "redirect:/course/" + id;
     }
 
-    @PreAuthorize("isAuthenticated()")
     @PostMapping("/{courseId}/assign")
     public String assignUserForm(@PathVariable("courseId") Long courseId,
                                  @RequestParam("userId") Long userId,
@@ -133,7 +128,6 @@ public class CourseController {
         return "redirect:/course";
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{courseId}/assign")
     public String assignUserForm(@PathVariable("courseId") Long courseId, Model model, HttpServletRequest request) {
         if (courseService.existsById(courseId)) {

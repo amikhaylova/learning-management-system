@@ -11,7 +11,6 @@ import com.mikhaylova.lms.service.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,7 +53,6 @@ public class UserController {
             return null;
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public String userForm(Model model,
                            @PathVariable("id") Long id,
@@ -71,7 +69,6 @@ public class UserController {
         return "user-form";
     }
 
-    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public String submitUserForm(@Valid @ModelAttribute("user") UserDto user,
                                  BindingResult bindingResult,
@@ -88,7 +85,6 @@ public class UserController {
         return "redirect:/course";
     }
 
-    @PreAuthorize("isAuthenticated()")
     @PostMapping("/{id}/avatar")
     public String updateAvatarImage(@RequestParam("avatar") MultipartFile avatar,
                                     @PathVariable("id") Long id) {
@@ -101,14 +97,12 @@ public class UserController {
     }
 
     //перенаправление в личный кабинет
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public String getUserProfile(HttpServletRequest request) {
         Long id = userService.findUserByUsername(request.getUserPrincipal().getName()).getId();
         return "redirect:/user/" + id;
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/avatar")
     @ResponseBody
     public ResponseEntity<byte[]> avatarImageByUserId(@PathVariable("id") Long id) {
@@ -122,7 +116,6 @@ public class UserController {
     }
 
     //для получение аватара текущего пользователя в nav-bar, где id пользователя неизвестен
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/avatar")
     @ResponseBody
     public ResponseEntity<byte[]> avatarImageOfCurrentUser(Authentication auth) {

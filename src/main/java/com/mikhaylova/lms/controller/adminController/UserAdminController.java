@@ -1,7 +1,6 @@
 package com.mikhaylova.lms.controller.adminController;
 
 import com.mikhaylova.lms.service.UserService;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ public class UserAdminController {
         this.userService = userService;
     }
 
-    @Secured("ROLE_ADMIN")
     @GetMapping("/users")
     public String usersTable(Model model) {
         model.addAttribute("users", userService.findAllUserDto());

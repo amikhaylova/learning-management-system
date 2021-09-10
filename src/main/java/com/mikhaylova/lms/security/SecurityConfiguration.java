@@ -35,7 +35,10 @@ public class SecurityConfiguration {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    .antMatchers("/**").permitAll()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/login", "/register", "/course", "/course/*/cover").permitAll()
+                    .antMatchers("/*.css", "/img/**").permitAll()
+                    .antMatchers("/**").authenticated()
                     .and()
                     .formLogin()
                     .loginPage("/login")

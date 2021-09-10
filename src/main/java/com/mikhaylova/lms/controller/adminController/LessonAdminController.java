@@ -4,7 +4,6 @@ import com.mikhaylova.lms.domain.Lesson;
 import com.mikhaylova.lms.dto.LessonDto;
 import com.mikhaylova.lms.mapper.LessonMapper;
 import com.mikhaylova.lms.service.LessonService;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,14 +23,12 @@ public class LessonAdminController {
         this.lessonMapper = lessonMapper;
     }
 
-    @Secured("ROLE_ADMIN")
     @GetMapping("/new")
     public String newLessonForm(Model model, @RequestParam("course_id") Long courseId) {
         model.addAttribute("lessonDto", new LessonDto(courseId));
         return "lesson-form";
     }
 
-    @Secured("ROLE_ADMIN")
     @PostMapping
     public String submitLessonForm(@Valid LessonDto lessonDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -42,7 +39,6 @@ public class LessonAdminController {
         return "redirect:/course/" + lessonDto.getCourseId();
     }
 
-    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public String deleteLesson(@PathVariable("id") Long id, @RequestParam("course_id") Long courseId) {
         lessonService.deleteLesson(id);
