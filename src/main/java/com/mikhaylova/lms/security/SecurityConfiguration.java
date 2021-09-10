@@ -24,7 +24,7 @@ public class SecurityConfiguration {
 
     @Autowired
     public void authConfigure(AuthenticationManagerBuilder auth,
-                              @Qualifier("userAuthService") UserDetailsService userDetailsService) throws Exception {
+                              @Qualifier("userServiceImpl") UserDetailsService userDetailsService) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
 

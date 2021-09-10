@@ -14,11 +14,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserMapper {
-    private final PasswordEncoder encoder;
+    private PasswordEncoder encoder;
     private final RoleService roleService;
 
-    public UserMapper(PasswordEncoder encoder, RoleService roleService) {
+
+    public void setEncoder(PasswordEncoder encoder) {
         this.encoder = encoder;
+    }
+
+    public UserMapper(RoleService roleService) {
         this.roleService = roleService;
     }
 
