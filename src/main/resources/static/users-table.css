@@ -22,10 +22,6 @@
     overflow-y: auto;
 }
 .buttons-span {
-    /* display: grid;
-     grid-template-columns: 1fr 1fr;
-     justify-items: start;
-     align-items: center;*/
     display: flex;
     flex-direction: row;
     justify-content: flex-start;

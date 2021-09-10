@@ -120,9 +120,9 @@ public class CourseController {
                                      HttpServletRequest request) {
         String principalName = request.getUserPrincipal().getName();
         Long principalId = userService.findUserByUsername(principalName).getId();
-        //предотвращаем попытку авторизованного пользователя (если он не адмиистратор)
-        // назначить на курс кого-то, кроме себя
-        if (!request.isUserInRole("ROLE_ADMIN") && !userId.equals(principalId))
+        boolean userIsNotAdmin = !request.isUserInRole("ROLE_ADMIN");
+        boolean userIsChangingAnotherUser = !userId.equals(principalId);
+        if (userIsNotAdmin && userIsChangingAnotherUser)
             throw new AccessDeniedException("Access denied");
         courseService.assignUser(courseId, userId);
         return "redirect:/course";

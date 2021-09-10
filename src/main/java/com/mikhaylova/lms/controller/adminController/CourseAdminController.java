@@ -33,13 +33,12 @@ public class CourseAdminController {
                                    BindingResult bindingResult,
                                    Model model) {
         if (bindingResult.hasErrors()) {
-            if (course.getId() != null) {
+            boolean courseAlreadyExists = course.getId() != null;
+            if (courseAlreadyExists) {
                 Course c = courseService.getCourseById(course.getId());
                 model.addAttribute("lessons", lessonService.findAllForLessonIdWithoutText(course.getId()));
                 model.addAttribute("users", userMapper.mapUserListToUserDtoList(new ArrayList<>(c.getUsers())));
             } else {
-                //если id курса == null, это значит, что форма используется для создания курса, а не редактирования
-                //т.е. смысла отображать таблицы уроков и пользователей нет
                 model.addAttribute("lessons", null);
                 model.addAttribute("users", null);
             }

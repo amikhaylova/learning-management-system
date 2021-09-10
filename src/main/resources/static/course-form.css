@@ -159,10 +159,6 @@
     background: #f0f2f5;
 }
 .buttons-span {
-   /* display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: start;
-    align-items: center;*/
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -176,6 +172,5 @@
 }
 .table-column-names, .table-row {
     display: grid;
-    /*  grid-template-columns: 0.5fr 3fr 2fr 3fr;*/
     grid-template-columns: minmax(0, 0.5fr) minmax(0, 5fr) minmax(0, 1fr);
 }

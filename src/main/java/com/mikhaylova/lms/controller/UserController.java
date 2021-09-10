@@ -78,8 +78,8 @@ public class UserController {
             model.addAttribute("activePage", "user");
             return "user-form";
         }
-        //не администратор не должен иметь доступа к ролям
-        if (!request.isUserInRole("ROLE_ADMIN"))
+        boolean userIsNotAdmin = !request.isUserInRole("ROLE_ADMIN");
+        if (userIsNotAdmin)
             user.setRoles(null);
         userService.saveUserDto(user);
         return "redirect:/course";
@@ -96,7 +96,6 @@ public class UserController {
         return "redirect:/user/" + id;
     }
 
-    //перенаправление в личный кабинет
     @GetMapping("/profile")
     public String getUserAccountInformation(HttpServletRequest request) {
         Long id = userService.findUserByUsername(request.getUserPrincipal().getName()).getId();
@@ -115,7 +114,6 @@ public class UserController {
                 .body(data);
     }
 
-    //для получение аватара текущего пользователя в nav-bar, где id пользователя неизвестен
     @GetMapping("/avatar")
     @ResponseBody
     public ResponseEntity<byte[]> avatarImageOfCurrentUser(Authentication auth) {
